@@ -2,7 +2,7 @@
     <el-row id="navBar" class="row" :style="transparent?{height:'50px','backgroundColor':'rgba(0,0,0,0.3)',left:0,top:0,position:'absolute'}:{height:'50px','backgroundColor':'white'}" style="box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15)">
         <slot name="other"></slot>
         <el-col class="col" :span="3" style="text-align: left;line-height: 50px;color:#50bfff ;font-size: 25px;padding-left: 20px">
-            <a style="text-decoration: none;cursor: pointer;color: inherit" href="/">DOClever</a>
+            <a style="text-decoration: none;cursor: pointer;color: inherit" href="/html/web/project/project.html">5i5jdoc</a>
         </el-col>
         <el-col class="col" :span="2" style="text-align: center;line-height: 50px;">
             <slot name="slot3">
@@ -66,7 +66,7 @@
                         <el-switch v-model="proxy" on-color="#13ce66" off-color="#ff4949" @click.native.stop="">
                         </el-switch>
                     </el-dropdown-item>
-                    <el-dropdown-item command="update">检查更新</el-dropdown-item>
+                    <!--<el-dropdown-item command="update">检查更新</el-dropdown-item>-->
                     <el-dropdown-item command="quit">退出</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>

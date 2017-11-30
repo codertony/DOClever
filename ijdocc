@@ -1,0 +1,61 @@
+#!/bin/sh
+# node      Start up node server daemon
+#
+# chkconfig: 345 85 15
+# description: Forever for Node.js
+#
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/java/jdk1.7.0_71/bin:/dat/node-v6/bin:/root/bin
+DEAMON=/dat/ijdoc/ijdoc/Server/bin/www
+LOG=/dat/ijdoc/log
+PID=/tmp/forever.pid
+IJDOCS=$(forever list)
+case "$1" in
+    start|'')
+        if [[ $IJDOCS =~ "${DEAMON}" ]]
+        then
+            echo "ijdoc已经启动了"
+        else
+            forever start -l $LOG/forever.log -o $LOG/forever_out.log -e $LOG/forever_err.log --pidFile $PID --uid 'ijdoc' -a $DEAMON
+              echo "ijdoc启动"
+        fi
+        if [[ $(docker ps) =~ "mongo" ]]
+        then
+            echo "mongodb已经启动了"
+        else
+            docker start mongo
+            echo "mongodb启动"
+        fi
+        echo "Usage: /dat/ijdoc/ijdocc {start|stop|restart|reload|stopall|restartall|list|stopMongo|startMongo}"
+        ;;
+    stop)
+        forever stop --pidFile $PID $DEAMON
+        echo "ijdoc已停止"
+        ;;
+    stopall)
+        forever stop --pidFile $PID $DEAMON
+        docker stop mongo
+        echo "ijdoc,mongodb已停止"
+        ;;
+    restartall)
+        forever restartall --pidFile $PID
+        ;;
+    reload|restart)
+        forever restart -l $LOG/forever.log -o $LOG/forever_out.log -e $LOG/forever_err.log --pidFile $PID -a $DEAMON
+        ;;
+    list)
+        forever list
+        ;;
+    stopMongo)
+        docker stop mongo
+        echo "mongodb已停止"
+        ;;
+    startMongo)
+        docker start mongo
+        echo "mongodb启动"
+        ;;
+    *)
+        echo "Usage: /dat/ijdoc/ijdocc {start|stop|restart|reload|stopall|restartall|list|stopMongo|startMongo}"
+        exit 1
+        ;;
+esac
+exit 0
